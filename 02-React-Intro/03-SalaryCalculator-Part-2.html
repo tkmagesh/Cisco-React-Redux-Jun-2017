@@ -70,8 +70,14 @@
 		};
 		
 		var SalaryCalculator = React.createClass({
-			onTxtBasicChange : function(evt){
-				this.props.model.set('basic', evt.target.value.toInt());
+			getChangeListenerFor : function(attrName){
+				var self = this;
+				return function(evt){
+					self.props.model.set(attrName, evt.target.value.toInt());	
+				}
+			},
+			/*onTxtBasicChange : function(evt){
+				
 			},
 			onTxtHraChange : function(evt){
 				this.props.model.set('hra', evt.target.value.toInt());
@@ -81,7 +87,7 @@
 			},
 			onRangeTaxChange : function(evt){
 				this.props.model.set('tax', evt.target.value.toInt());
-			},
+			},*/
 			onBtnCalculateClick: function(){
 				this.props.model.calculate();
 			},
@@ -91,31 +97,40 @@
 					<div>
 						<div className="field">
 							<label htmlFor="">Basic :</label>
-							<input type="number"  ref="txtBasic"  onChange={this.onTxtBasicChange} />
+							<input type="number"  ref="txtBasic" value={data.basic}  onChange={this.getChangeListenerFor('basic')} />
 						</div>
 						<div className="field">
 							<label htmlFor="">HRA :</label>
-							<input type="number"  ref="txtHra"  onChange={this.onTxtHraChange} />
+							<input type="number"  ref="txtHra"  value={data.hra} onChange={this.getChangeListenerFor('hra')} />
 						</div>
 						<div className="field">
 							<label>DA :</label>
-							<input type="number"  ref="txtDa"  onChange={this.onTxtDaChange} />
+							<input type="number"  ref="txtDa"  value={data.da} onChange={this.getChangeListenerFor('da')} />
 						</div>
 						<div className="field">
 							<label htmlFor="">Tax :</label>
-							<input type="range"  ref="rangeTax" min="0" max="30"  onChange={this.onRangeTaxChange} />
+							<input type="range"  ref="rangeTax" min="0" max="30"  value={data.tax} onChange={this.getChangeListenerFor('tax')} />
 							<span id="spanTax">{data.tax}</span>
 						</div>
 						<div className="field">
 							<input type="button" value="Calculate" id="btnCalculate" onClick={this.onBtnCalculateClick}/>
 						</div>
-						<div className="field">
-							<div id="divResult">{data.salary}</div>
-						</div>
+						<SalaryDisplay salary={data.salary}></SalaryDisplay>
 					</div>
 				);
 			}
 		});
+
+		var SalaryDisplay = React.createClass({
+			render : function(){
+				var salary = this.props.salary;
+				return (
+					<div className="field">
+						<div id="divResult">{salary}</div>
+					</div>
+				)
+			}
+		})
 
 		var calculatorModel = new SalaryCalculatorModel();
 		
