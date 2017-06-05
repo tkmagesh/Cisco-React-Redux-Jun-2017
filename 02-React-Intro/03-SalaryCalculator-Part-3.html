@@ -77,18 +77,7 @@
 				}
 			},
 			
-			/*onTxtBasicChange : function(evt){
-				
-			},
-			onTxtHraChange : function(evt){
-				this.props.model.set('hra', evt.target.value.toInt());
-			},
-			onTxtDaChange : function(evt){
-				this.props.model.set('da', evt.target.value.toInt());
-			},
-			onRangeTaxChange : function(evt){
-				this.props.model.set('tax', evt.target.value.toInt());
-			},*/
+			
 			onBtnCalculateClick: function(){
 				this.props.model.calculate();
 			},
@@ -97,19 +86,10 @@
 				return (
 					<div>
 						<NumberField fieldLabel="Basic :"  value={data.basic} onValueChange={this.getChangeListenerFor('basic')} />
-						<div className="field">
-							<label htmlFor="">HRA :</label>
-							<input type="number"  ref="txtHra"  value={data.hra} onChange={this.getChangeListenerFor('hra')} />
-						</div>
-						<div className="field">
-							<label>DA :</label>
-							<input type="number"  ref="txtDa"  value={data.da} onChange={this.getChangeListenerFor('da')} />
-						</div>
-						<div className="field">
-							<label htmlFor="">Tax :</label>
-							<input type="range"  ref="rangeTax" min="0" max="30"  value={data.tax} onChange={this.getChangeListenerFor('tax')} />
-							<span id="spanTax">{data.tax}</span>
-						</div>
+						
+						<NumberField fieldLabel="HRA :" value={data.hra} onValueChange={this.getChangeListenerFor('hra')} />
+						<NumberField fieldLabel="DA :" value={data.da} onValueChange={this.getChangeListenerFor('da')} />
+						<RangeField fieldLabel="Tax :" value={data.tax} onValueChange={this.getChangeListenerFor('tax')} />
 						<div className="field">
 							<input type="button" value="Calculate" id="btnCalculate" onClick={this.onBtnCalculateClick}/>
 						</div>
@@ -143,7 +123,24 @@
 						</div>
 				)
 			}
-		})
+		});
+		
+
+		var RangeField = React.createClass({
+			onRangeChange : function(evt){
+				var value = evt.target.value.toInt();
+				this.props.onValueChange(value);
+			},
+			render : function(){
+				return(
+					<div className="field">
+							<label htmlFor="">{this.props.fieldLabel}</label>
+							<input type="range"  ref="rangeTax" min="0" max="30"  value={this.props.value} onChange={this.onRangeChange} />
+							<span id="spanTax">{this.props.value}</span>
+						</div>
+				)
+			}
+		});
 
 		var calculatorModel = new SalaryCalculatorModel();
 		
