@@ -19,6 +19,7 @@
 		}
 	</style>
 	<script src="jquery-3.2.1.min.js"></script>
+	<script src="handlebars.js"></script>
 	<script>
 		String.prototype.toInt = function(){
 			return parseInt(this, 10);
@@ -52,8 +53,37 @@
 		};
 
 		//View
-		$(function(){
-			window.calculator = new SalaryCalculator();
+		function SalaryCalculatorView(calculator){
+			
+
+			var templateHtml = `
+				<div class="content">
+					<div class="field">
+						<label for="">Basic :</label>
+						<input type="number" name="" id="txtBasic" value="{{basic}}">
+					</div>
+					<div class="field">
+						<label for="">HRA :</label>
+						<input type="number" name="" id="txtHra" value="{{hra}}">
+					</div>
+					<div class="field">
+						<label>DA :</label>
+						<input type="number" name="" id="txtDa" value="{{da}}">
+					</div>
+					<div class="field">
+						<label for="">Tax :</label>
+						<input type="range" name="" id="rangeTax" min="0" max="30" value="{{tax}}">
+						<span id="spanTax">{{tax}}</span>
+					</div>
+					<div class="field">
+						<input type="button" value="Calculate" id="btnCalculate">
+					</div>
+					<div class="field">
+						<div id="divResult">{{salary}}</div>
+					</div>
+				</div>
+			`
+			this.$root = $root = $('<div></div>');
 
 			$('#btnCalculate').click(function(){
 
@@ -70,39 +100,23 @@
 			$('#rangeTax').change(function(){
 				$('#spanTax').html(this.value);
 			});
+			var templateFn = Handlebars.compile(templateHtml);
 
-			function render(){
-				$('#txtBasic').val(calculator.basic);
-				$('#txtHra').val(calculator.hra);
-				$('#txtDa').val(calculator.da);
-				$('#rangeTax').val(calculator.tax);
-				$('#spanTax').html(calculator.tax);
-				$('#divResult').html(calculator.salary);
+			this.render = function(){
+				var newHtml = templateFn(calculator);
+				$root.html(newHtml);
 			}
-			
-			calculator.subscribe(render);
-		});
+
+			calculator.subscribe(this.render);
+		};
+
+		
+
 	</script>
 </head>
 <body>
 	<h1>Salary Calculator</h1>
 	<hr>
-	<div class="content">
-		<div class="field"><label for="">Basic :</label><input type="number" name="" id="txtBasic"></div>
-		<div class="field"><label for="">HRA :</label><input type="number" name="" id="txtHra"></div>
-		<div class="field">
-			<label>DA :</label>
-			<input type="number" name="" id="txtDa">
-		</div>
-		<div class="field">
-			<label for="">Tax :</label>
-			<input type="range" name="" id="rangeTax" min="0" max="30" value="0">
-			<span id="spanTax">[Tax]</span>
-		</div>
-		<div class="field"><input type="button" value="Calculate" id="btnCalculate"></div>
-		<div class="field">
-			<div id="divResult">[Salary]</div>
-		</div>
-	</div>
+	
 </body>
 </html>
