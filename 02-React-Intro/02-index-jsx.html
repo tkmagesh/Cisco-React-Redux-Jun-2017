@@ -9,26 +9,39 @@
 	<script src="babel.min.js"></script>
 	<script type="text/babel">
 		var MyView = React.createClass({
+			onRenderClick : function(){
+				var msg = this.refs.txtMessage.value;
+				this.setState({data : msg});
+			},
+			getInitialState :function(){
+				return {
+					data : 'Default message',
+					abc : 100
+				};
+			},
+			updateText : function(evt){
+				this.setState({ data : evt.target.value });
+			},
 			render : function(){
 				return (
 					<div>
-						<h1>{this.props.data}</h1>
+						<label htmlFor=>Message : </label>
+						<input type="text" ref="txtMessage" className value={this.state.data} onChange={this.updateText}/>
+						<input type="button" value="Render-React" id="btnRenderReact" onClick={this.onRenderClick}/>
+						<hr />
+						<h1>{this.state.data}</h1>
 						<hr/>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus qui, quae aliquid corporis excepturi cum, sint, est nemo veritatis asperiores, dolor ea molestias mollitia assumenda aut accusantium animi quam voluptatibus</p>
 					</div>
 				);
 			}
 		});
-		$(function(){
-			$('#btnRenderReact').click(function(){
-				var msg = prompt('Enter the greet message :');
-				ReactDOM.render(<MyView data={msg}></MyView>, document.getElementById('content'));
-			});
-		});
+		
+		ReactDOM.render(<MyView></MyView>, document.getElementById('content'));
 	</script>
 </head>
 <body>
-	<input type="button" value="Render-React" id="btnRenderReact">
+	
 	<div id="content"></div>
 </body>
 </html>
