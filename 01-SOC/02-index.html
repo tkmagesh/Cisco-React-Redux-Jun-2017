@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Salary Calculator</title>
+	<style>
+		.field{
+			margin-bottom: 10px;
+		}
+		label{
+			display: block;
+		}
+		#divResult{
+			color : red;
+			font-size: 22pt;
+		}
+		body{
+			margin-left: 50px;
+		}
+	</style>
+	<script src="jquery-3.2.1.min.js"></script>
+	<script>
+		String.prototype.toInt = function(){
+			return parseInt(this, 10);
+		}
+
+		//Model
+		function SalaryCalculator(){
+			this.basic = 0;
+			this.hra = 0;
+			this.da = 0;
+			this.tax = 0;
+			this.salary = 0;
+
+			var _subscribers = [];
+			this.subscribe = function(callback){
+				_subscribers.push(callback);
+			}
+
+			this.triggerChange = function(){
+				_subscribers.forEach(function(callback){
+					if (typeof callback === 'function')
+						callback();
+				})
+			}
+		}
+		SalaryCalculator.prototype.calculate = function() {
+			var gross = this.basic + this.hra + this.da;
+			var net = gross * ((100-this.tax)/100);
+			this.salary = net;
+			this.triggerChange();
+		};
+
+		//View
+		$(function(){
+			window.calculator = new SalaryCalculator();
+
+			$('#btnCalculate').click(function(){
+
+				calculator.basic = $('#txtBasic').val().toInt();
+				calculator.hra = $('#txtHra').val().toInt();
+				calculator.da = $('#txtDa').val().toInt();
+				calculator.tax = $('#rangeTax').val().toInt();
+
+				calculator.calculate();
+
+				
+			});
+
+			$('#rangeTax').change(function(){
+				$('#spanTax').html(this.value);
+			});
+
+			calculator.subscribe(function(){
+				$('#txtBasic').val(calculator.basic);
+				$('#txtHra').val(calculator.hra);
+				$('#txtDa').val(calculator.da);
+				$('#rangeTax').val(calculator.tax);
+				$('#spanTax').html(calculator.tax);
+				$('#divResult').html(calculator.salary);
+			});
+		});
+	</script>
+</head>
+<body>
+	<h1>Salary Calculator</h1>
+	<hr>
+	<div class="content">
+		<div class="field"><label for="">Basic :</label><input type="number" name="" id="txtBasic"></div>
+		<div class="field"><label for="">HRA :</label><input type="number" name="" id="txtHra"></div>
+		<div class="field">
+			<label>DA :</label>
+			<input type="number" name="" id="txtDa">
+		</div>
+		<div class="field">
+			<label for="">Tax :</label>
+			<input type="range" name="" id="rangeTax" min="0" max="30" value="0">
+			<span id="spanTax">[Tax]</span>
+		</div>
+		<div class="field"><input type="button" value="Calculate" id="btnCalculate"></div>
+		<div class="field">
+			<div id="divResult">[Salary]</div>
+		</div>
+	</div>
+</body>
+</html>

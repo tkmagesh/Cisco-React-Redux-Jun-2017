@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Salary Calculator</title>
+	<style>
+		.field{
+			margin-bottom: 10px;
+		}
+		label{
+			display: block;
+		}
+		#divResult{
+			color : red;
+			font-size: 22pt;
+		}
+		body{
+			margin-left: 50px;
+		}
+	</style>
+	<script src="jquery-3.2.1.min.js"></script>
+	<script>
+		String.prototype.toInt = function(){
+			return parseInt(this, 10);
+		}
+		
+		$(function(){
+			$('#btnCalculate').click(function(){
+				var basic = $('#txtBasic').val().toInt(),
+					hra = $('#txtHra').val().toInt(),
+					da = $('#txtDa').val().toInt(),
+					tax = $('#rangeTax').val().toInt();
+
+				var gross = basic + hra + da;
+				var net = gross * ((100-tax)/100);
+				$('#divResult').html(net);
+			});
+
+			$('#rangeTax').change(function(){
+				$('#spanTax').html(this.value);
+			});
+
+		});
+	</script>
+</head>
+<body>
+	<h1>Salary Calculator</h1>
+	<hr>
+	<div class="content">
+		<div class="field"><label for="">Basic :</label><input type="number" name="" id="txtBasic"></div>
+		<div class="field"><label for="">HRA :</label><input type="number" name="" id="txtHra"></div>
+		<div class="field">
+			<label>DA :</label>
+			<input type="number" name="" id="txtDa">
+		</div>
+		<div class="field">
+			<label for="">Tax :</label>
+			<input type="range" name="" id="rangeTax" min="0" max="30" value="0">
+			<span id="spanTax">[Tax]</span>
+		</div>
+		<div class="field"><input type="button" value="Calculate" id="btnCalculate"></div>
+		<div class="field">
+			<div id="divResult">[Salary]</div>
+		</div>
+	</div>
+</body>
+</html>
