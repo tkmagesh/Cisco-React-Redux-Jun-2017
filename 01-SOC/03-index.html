@@ -85,7 +85,7 @@
 			`
 			this.$root = $root = $('<div></div>');
 
-			$('#btnCalculate').click(function(){
+			$root.on('click', '#btnCalculate', function(){
 
 				calculator.basic = $('#txtBasic').val().toInt();
 				calculator.hra = $('#txtHra').val().toInt();
@@ -97,8 +97,8 @@
 				
 			});
 
-			$('#rangeTax').change(function(){
-				$('#spanTax').html(this.value);
+			$root.on('change','#rangeTax', function(){
+				$('#spanTax', $root).html(this.value);
 			});
 			var templateFn = Handlebars.compile(templateHtml);
 

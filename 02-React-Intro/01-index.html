@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Intro</title>
+	<script src="jquery-3.2.1.min.js"></script>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script>
+		var MyView = React.createClass({
+			render : function(){
+				return React.createElement('div', null, 
+					React.createElement('h1', null, 'Welcome to React.js'),
+					React.createElement('hr', null, null),
+					React.createElement('p', null, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus qui, quae aliquid corporis excepturi cum, sint, est nemo veritatis asperiores, dolor ea molestias mollitia assumenda aut accusantium animi quam voluptatibus.'));
+			}
+		});
+		$(function(){
+			$('#btnRenderReact').click(function(){
+				ReactDOM.render(React.createElement(MyView, null, null), document.getElementById('content'));
+			});
+		});
+	</script>
+</head>
+<body>
+	<input type="button" value="Render-React" id="btnRenderReact">
+	<div id="content"></div>
+</body>
+</html>

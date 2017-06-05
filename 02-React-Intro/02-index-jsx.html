@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Intro</title>
+	<script src="jquery-3.2.1.min.js"></script>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		var MyView = React.createClass({
+			render : function(){
+				return (
+					<div>
+						<h1>{this.props.data}</h1>
+						<hr/>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus qui, quae aliquid corporis excepturi cum, sint, est nemo veritatis asperiores, dolor ea molestias mollitia assumenda aut accusantium animi quam voluptatibus</p>
+					</div>
+				);
+			}
+		});
+		$(function(){
+			$('#btnRenderReact').click(function(){
+				var msg = prompt('Enter the greet message :');
+				ReactDOM.render(<MyView data={msg}></MyView>, document.getElementById('content'));
+			});
+		});
+	</script>
+</head>
+<body>
+	<input type="button" value="Render-React" id="btnRenderReact">
+	<div id="content"></div>
+</body>
+</html>
