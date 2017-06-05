@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bug Tracker</title>
+	<style>
+		body{
+			margin-left: 50px;
+		}
+		section{
+			margin-bottom: 10px;
+		}
+		.closed{
+			color : red;
+			font-style: italic;
+			font-weight: bold;
+			text-decoration: line-through;
+		}
+		.stats, .bugname{
+			font-size: 22pt;
+		}
+		ol{
+			list-style: none;
+			width: 500px;
+			-webkit-padding-start : 0px;
+		}
+		li{
+			margin-bottom: 10px;
+			border: 1px solid gray;
+			background-color: #e7e7e7;
+			padding: 5px;
+			border-radius: 5px;
+		}
+		.bugname{
+			cursor : pointer;
+		}
+		.datetime{
+			font-style : italic;
+		}
+	</style>
+</head>
+<body>
+	<h1>Bug Tracker</h1>
+	<hr>
+	<div class="content">
+		<section class="stats">
+			<span class="closed">2</span>
+			<span> / </span>
+			<span>5</span>
+		</section>
+		<section class="edit">
+			<label for="">Bug :</label>
+			<input type="text" name="" id="">
+			<input type="button" value="Add New">
+		</section>
+		<section class="list">
+			<ol>
+				<li>
+					<span class="bugname">This is bug - 1</span>
+					<div class="datetime">[Created At]</div>
+				</li>
+				<li>
+					<span class="bugname closed">This is bug - 2</span>
+					<div class="datetime">[Created At]</div>
+				</li>
+			</ol>
+			<input type="button" value="Remove Closed">
+		</section>
+	</div>
+</body>
+</html>

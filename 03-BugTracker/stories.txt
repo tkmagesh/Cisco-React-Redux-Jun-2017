@@ -1,0 +1,6 @@
+1. add a new bug
+2. list the bugs
+3. toggle the 'closed' status of a bug
+4. remove 'closed' bugs
+5. display statistics (# of closed bugs / total # of bugs)
+6. persist the bugs in the server
