@@ -33,13 +33,13 @@
 			}
 		}
 		
-		function mapStateToProps(state){
+		function mapCounterStateToProps(state){
 			return {
 				value : state
 			}
 		}
 
-		function mapDispatchToProps(dispatch){
+		function mapCounterDispatchToProps(dispatch){
 
 			var incrementAction = { type : 'INCREMENT'};
 			var decrementAction = { type : 'DECREMENT'};
@@ -57,7 +57,7 @@
 		}
 		
 
-		let ConnectedCounter = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Counter);
+		let ConnectedCounter = ReactRedux.connect(mapCounterStateToProps, mapCounterDispatchToProps)(Counter);
 		
 		var store = Redux.createStore(counterReducer);		
 		
