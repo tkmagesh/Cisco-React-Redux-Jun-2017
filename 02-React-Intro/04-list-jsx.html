@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Intro</title>
+	<script src="jquery-3.2.1.min.js"></script>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		var products = ['Pen', 'Pencil', 'Marker'];
+
+		class ProductList extends React.Component{
+			render(){
+				var products = this.props.data;
+				var productItems = products.map(function(product, index){ return (<li key={index}>{product}</li>); })
+				return(
+					<ol>
+						{productItems}
+					</ol>
+				)
+			}
+		}
+		ReactDOM.render(<ProductList data={products}></ProductList>, document.getElementById('content'));
+	</script>
+</head>
+<body>
+	
+	<div id="content"></div>
+</body>
+</html>

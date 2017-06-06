@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bug Tracker</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class EventEmitter{
+			constructor(){
+				this._subscribers = [];
+			}
+			subscribe(callback){
+				this._subscribers.push(callback);
+			}
+			triggerChange(){
+				this._subscribers.forEach(callback => callback());
+			};
+		}
+
+		class BugsCollection extends EventEmitter{
+			constructor(){
+				super();
+				this._list = [];
+			}
+			add(bugName){
+				this._list.push(bugName);
+				this.triggerChange();
+			}
+			getAll(){
+				return [...this._list];
+			}
+		}
+
+		class BugTracker extends React.Component{
+			onAddNewClick(){
+				let bugName = this.refs.txtBugName.value;
+				this.props.bugs.add(bugName);
+			}
+			render(){
+				let bugsList = this.props.bugs.getAll();
+				let bugItems = bugsList.map((bug, index) => (
+					<li key={index}>
+						<span className="bugname" >{bug}</span>
+						<div className="datetime">[Created At]</div>
+					</li>
+				));
+
+				return(
+					<div>
+						<section className="stats">
+							<span className="closed">2</span>
+							<span> / </span>
+							<span>{bugsList.length}</span>
+						</section>
+						<section className="edit">
+							<label htmlFor="">Bug :</label>
+							<input type="text" ref="txtBugName" />
+							<input type="button" value="Add New" onClick={this.onAddNewClick.bind(this)}/>
+						</section>
+						<section className="list">
+							<ol>
+								{bugItems}
+							</ol>
+							<input type="button" value="Remove Closed" />
+						</section>
+					</div>
+				)
+			}
+		}
+
+		let bugsCollection = new BugsCollection();
+		function renderApp(){
+			ReactDOM.render(<BugTracker bugs={bugsCollection}></BugTracker>, document.getElementById('content'));
+		}
+		bugsCollection.subscribe(renderApp);
+		renderApp();
+	</script>
+</head>
+<body>
+	<h1>Bug Tracker</h1>
+	<hr>
+	<div id="content">
+		
+	</div>
+</body>
+</html>
