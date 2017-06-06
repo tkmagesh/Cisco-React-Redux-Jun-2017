@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>State Manager demo</title>
-	<script src="StateManager.js"></script>
+	<script src="redux.js"></script>
 	<script src="react.js"></script>
 	<script src="react-dom.js"></script>
 	<script src="babel.min.js"></script>
@@ -61,7 +61,7 @@
 			}
 		}
 
-		var store = StateManager.createStore(counterReducer);		
+		var store = Redux.createStore(counterReducer);		
 		var actions = createCounterActions(store.dispatch);
 
 		function renderApp(){

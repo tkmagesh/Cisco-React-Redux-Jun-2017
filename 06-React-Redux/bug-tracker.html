@@ -7,7 +7,7 @@
 	<script src="react.js"></script>
 	<script src="react-dom.js"></script>
 	<script src="babel.min.js"></script>
-	<script src="stateManager.js"></script>
+	<script src="redux.js"></script>
 	<script type="text/babel">
 		
 		function bugsReducer(currentState = [], action){
@@ -116,9 +116,9 @@
 			}
 		}
 
-		var store = StateManager.createStore(bugsReducer);
+		var store = Redux.createStore(bugsReducer);
 		
-		var bugActions = StateManager.bindActionCreators(bugActionCreators, store.dispatch);
+		var bugActions = Redux.bindActionCreators(bugActionCreators(), store.dispatch);
 
 		store.subscribe(renderApp);
 		

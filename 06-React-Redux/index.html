@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>State Manager demo</title>
+	<script src="redux.js"></script>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script src="react-redux.js"></script>
+	<script type="text/babel">
+		function counterReducer(currentState = 0, action){
+			switch(action.type){
+		        case 'INCREMENT':
+					return ++currentState;
+		        case 'DECREMENT':
+					return --currentState;
+				default :
+					return currentState;
+		    }
+		}
+		
+		class Counter extends React.Component{
+			render(){
+				let {value, increment, decrement } = this.props;
+				return(
+					<div>
+						<input type="button" value="Decrement" onClick={decrement}/>
+						<div> {value} </div>
+						<input type="button" value="Increment" onClick={increment}/>
+					</div>
+				)
+			}
+		}
+		
+		function mapStateToProps(state){
+			return {
+				value : state
+			}
+		}
+
+		function mapDispatchToProps(dispatch){
+
+			var incrementAction = { type : 'INCREMENT'};
+			var decrementAction = { type : 'DECREMENT'};
+			function increment(){
+				dispatch(incrementAction);
+			}
+
+			function decrement(){
+				dispatch(decrementAction)
+			}
+			return{
+				increment : increment,
+				decrement : decrement
+			}
+		}
+		
+
+		let ConnectedCounter = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Counter);
+		
+		var store = Redux.createStore(counterReducer);		
+		
+		ReactDOM.render(
+			<ReactRedux.Provider store={store}>
+				<ConnectedCounter></ConnectedCounter>
+			</ReactRedux.Provider>
+		, document.getElementById('content'));
+
+	</script>
+</head>
+<body>
+	<div id="content"></div>
+</body>
+</html>
