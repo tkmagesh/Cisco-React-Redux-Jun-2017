@@ -18,31 +18,55 @@
 					return currentState;
 		    }
 		}
-		class Counter extends React.Component{
-			onIncrementClick(){
-				var incrementAction = { type : 'INCREMENT'};
-				this.props.store.dispatch(incrementAction);
-			}
-			onDecrementClick(){
-				var decrementAction = { type : 'DECREMENT'};
-				this.props.store.dispatch(decrementAction);
-			}
+		{
+		/*class Counter extends React.Component{
 			render(){
-				var value = this.props.store.getState();
 				return(
 					<div>
-						<input type="button" value="Decrement" onClick={this.onDecrementClick.bind(this)}/>
-						<div> {value} </div>
-						<input type="button" value="Increment" onClick={this.onIncrementClick.bind(this)}/>
+						<input type="button" value="Decrement" onClick={() => this.props.decrement()}/>
+						<div> {this.props.value} </div>
+						<input type="button" value="Increment" onClick={() => this.props.increment()}/>
 					</div>
 				)
 			}
+		}*/
 		}
+
+		let Counter =  ({value, increment, decrement}) => (
+			<div>
+				<input type="button" value="Decrement" onClick={decrement}/>
+				<div> {value} </div>
+				<input type="button" value="Increment" onClick={increment}/>
+			</div>
+		);
+		
+			
 	
-		var store = createStore(counterReducer);
+		
+
+		function createCounterActions(dispatch){
+
+			var incrementAction = { type : 'INCREMENT'};
+			var decrementAction = { type : 'DECREMENT'};
+			function increment(){
+				dispatch(incrementAction);
+			}
+
+			function decrement(){
+				dispatch(decrementAction)
+			}
+			return{
+				increment : increment,
+				decrement : decrement
+			}
+		}
+
+		var store = createStore(counterReducer);		
+		var actions = createCounterActions(store.dispatch);
 
 		function renderApp(){
-			ReactDOM.render(<Counter store={store}></Counter>, document.getElementById('content'));
+			var counterValue = store.getState();
+			ReactDOM.render(<Counter value={counterValue} increment={actions.increment} decrement={actions.decrement}></Counter>, document.getElementById('content'));
 		}
 
 		store.subscribe(renderApp);
