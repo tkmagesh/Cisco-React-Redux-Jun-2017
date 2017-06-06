@@ -37,14 +37,24 @@
 		class BugTracker extends React.Component{
 			onAddNewClick(){
 				let bugName = this.refs.txtBugName.value;
-				this.props.bugs.add(bugName);
+				var newBug = {
+					name : bugName,
+					createdAt : new Date(),
+					isClosed : false
+				};
+				this.props.bugs.add(newBug);
+			}
+			onBugClick(bug){
+				bug.isClosed = !bug.isClosed;
+				console.log(bug);
 			}
 			render(){
 				let bugsList = this.props.bugs.getAll();
 				let bugItems = bugsList.map((bug, index) => (
 					<li key={index}>
-						<span className="bugname" >{bug}</span>
-						<div className="datetime">[Created At]</div>
+						<span className="bugname" onClick={this.onBugClick.bind(this, bug)} >{bug.name}</span>
+						<div className="datetime">[{bug.createdAt.toString()}]</div>
+						<div>{bug.isClosed.toString()}</div>
 					</li>
 				));
 
