@@ -19,6 +19,14 @@
 						createdAt : new Date()
 					};
 					return [...currentState, newBug];
+				case 'TOGGLE':
+					return currentState.map(bugInList => bugInList === action.payload ? {
+						name : bugInList.name,
+						isClosed : !bugInList.isClosed,
+						createdAt : bugInList.createdAt
+					} : bugInList);
+				case 'REMOVE_CLOSED':
+					return currentState.filter(bugInList => !bugInList.isClosed);
 				default :
 					return currentState;
 			}
@@ -28,8 +36,16 @@
 			function addNew(newBugName){
 				return { type : 'ADD_NEW', payload : newBugName};
 			}
+			function toggle(bug){
+				return { type : 'TOGGLE', payload : bug};
+			}
+			function removeClosed(){
+				return { type : 'REMOVE_CLOSED'};
+			}
 			return {
-				addNew : addNew
+				addNew : addNew,
+				toggle : toggle,
+				removeClosed : removeClosed
 			}
 		};
 
@@ -37,18 +53,29 @@
 
 		class BugItem extends React.Component{
 			onBugClick(){
-				
+				this.props.toggle(this.props.data);
 			}
 			render(){
-				var bug = this.props.data;
+				let bug = this.props.data;
+				let bugNameStyle = bug.isClosed ? 'bugname closed' : 'bugname';
 				return (
 					<li>
-						<span className="bugname" onClick={this.onBugClick.bind(this)} >{bug.name}</span>
+						<span className={bugNameStyle} onClick={this.onBugClick.bind(this)} >{bug.name}</span>
 						<div className="datetime">[{bug.createdAt.toString()}]</div>
 						<div>{bug.isClosed.toString()}</div>
 					</li>
 				)
 			}
+		}
+		let BugStats = ({bugs}) => {
+			var closedCount = bugs.reduce((result, bug) => bug.isClosed ? ++result : result, 0);
+			return (
+				<section className="stats">
+					<span className="closed">{closedCount}</span>
+					<span> / </span>
+					<span>{bugs.length}</span>
+				</section>
+			)
 		}
 		class BugTracker extends React.Component{
 			onAddNewClick(){
@@ -59,16 +86,12 @@
 			render(){
 				let bugsList = this.props.bugs;
 				let bugItems = bugsList.map((bug, index) => (
-					<BugItem data={bug} key={index}></BugItem>
+					<BugItem data={bug} key={index} toggle={this.props.toggle}></BugItem>
 				));
 
 				return(
 					<div>
-						<section className="stats">
-							<span className="closed">2</span>
-							<span> / </span>
-							<span>{bugsList.length}</span>
-						</section>
+						<BugStats bugs={bugsList}></BugStats>
 						<section className="edit">
 							<label htmlFor="">Bug :</label>
 							<input type="text" ref="txtBugName" />
@@ -78,7 +101,7 @@
 							<ol>
 								{bugItems}
 							</ol>
-							<input type="button" value="Remove Closed" />
+							<input type="button" value="Remove Closed" onClick={() => this.props.removeClosed()}/>
 						</section>
 					</div>
 				)
@@ -93,7 +116,7 @@
 		
 		function renderApp(){
 			var bugs = store.getState();
-			ReactDOM.render(<BugTracker bugs={bugs} addNew={bugActions.addNew}></BugTracker>, document.getElementById('content'));
+			ReactDOM.render(<BugTracker bugs={bugs} addNew={bugActions.addNew} toggle={bugActions.toggle} removeClosed={bugActions.removeClosed}></BugTracker>, document.getElementById('content'));
 		}
 		
 		renderApp();
