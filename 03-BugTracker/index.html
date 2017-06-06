@@ -34,6 +34,23 @@
 			}
 		}
 
+		class BugItem extends React.Component{
+			onBugClick(){
+				var bug = this.props.data;
+				bug.isClosed = !bug.isClosed;
+				console.log(bug);
+			}
+			render(){
+				var bug = this.props.data;
+				return (
+					<li>
+						<span className="bugname" onClick={this.onBugClick.bind(this)} >{bug.name}</span>
+						<div className="datetime">[{bug.createdAt.toString()}]</div>
+						<div>{bug.isClosed.toString()}</div>
+					</li>
+				)
+			}
+		}
 		class BugTracker extends React.Component{
 			onAddNewClick(){
 				let bugName = this.refs.txtBugName.value;
@@ -44,18 +61,11 @@
 				};
 				this.props.bugs.add(newBug);
 			}
-			onBugClick(bug){
-				bug.isClosed = !bug.isClosed;
-				console.log(bug);
-			}
+			
 			render(){
 				let bugsList = this.props.bugs.getAll();
 				let bugItems = bugsList.map((bug, index) => (
-					<li key={index}>
-						<span className="bugname" onClick={this.onBugClick.bind(this, bug)} >{bug.name}</span>
-						<div className="datetime">[{bug.createdAt.toString()}]</div>
-						<div>{bug.isClosed.toString()}</div>
-					</li>
+					<BugItem data={bug} key={index}></BugItem>
 				));
 
 				return(
