@@ -4,8 +4,52 @@
 	<meta charset="UTF-8">
 	<title>State Manager demo</title>
 	<script src="StateManager.js"></script>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		function counterReducer(currentState = 0, action){
+			switch(action.type){
+		        case 'INCREMENT':
+					return ++currentState;
+		        case 'DECREMENT':
+					return --currentState;
+				default :
+					return currentState;
+		    }
+		}
+		class Counter extends React.Component{
+			onIncrementClick(){
+				var incrementAction = { type : 'INCREMENT'};
+				this.props.store.dispatch(incrementAction);
+			}
+			onDecrementClick(){
+				var decrementAction = { type : 'DECREMENT'};
+				this.props.store.dispatch(decrementAction);
+			}
+			render(){
+				var value = this.props.store.getState();
+				return(
+					<div>
+						<input type="button" value="Decrement" onClick={this.onDecrementClick.bind(this)}/>
+						<div> {value} </div>
+						<input type="button" value="Increment" onClick={this.onIncrementClick.bind(this)}/>
+					</div>
+				)
+			}
+		}
+	
+		var store = createStore(counterReducer);
+
+		function renderApp(){
+			ReactDOM.render(<Counter store={store}></Counter>, document.getElementById('content'));
+		}
+
+		store.subscribe(renderApp);
+		renderApp();
+	</script>
 </head>
 <body>
-	
+	<div id="content"></div>
 </body>
 </html>
